@@ -15,8 +15,8 @@
 ## O arquivo com a lista dos ips a ser consultado deve existir ##
  
 ## Variaveis de ambiente ##
-logOnline=/home/alessandro.librelato/online.log
-logOffline=/home/alessandro.librelato/offline.log
+logOnline=/home/alessandro.librelato/onip.log
+logOffline=/home/alessandro.librelato/offip.log
 listaIp=/home/alessandro.librelato/listaIp.txt
 menu="
 
@@ -51,17 +51,17 @@ iniciar()
         else
             echo -e "        Log2 antigo nao precisa ser apagado..................[\e[32;2m OK \e[m]"
         fi
-        while read line; do
+        while read ip; do
             # Captura o ip atual da lista de DNSs achados #
-            leitura=( `ping -w 1 $line | grep "ttl="` )
+            leitura=( `ping -w 1 $ip | grep "ttl="` )
             # Compara se o ip achado na lista de dns eh igual ao ip consultado #
             if [ $leitura ]; then
                 # se  o ip achado na lista de dns eh igual ao ip consultado escreve no log #
-                echo "$line" >> $logOnline
-                echo "$line online"
+                echo "$ip" >> $logOnline
+                echo "$ip online"
             else
-                echo "$line" >> $logOffline
-                echo "$line offline"
+                echo "$ip" >> $logOffline
+                echo "$ip offline"
             fi
         done < $listaIp
         clear
