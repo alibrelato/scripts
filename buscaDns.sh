@@ -41,17 +41,27 @@ iniciar()
         if [ -e $log ]; then
             rm -f $log
             echo
-            echo -e "\e[32;2m    Log antigo apagado com sucesso \e[m"
+            echo -e "        Log antigo apagado com sucesso......................[\e[32;2m OK \e[m]"
+        else
             echo
+            echo -e "        Log antigo nao precisa ser apagado..................[\e[32;2m OK \e[m]"
         fi
-        # Verifica se o arquivo com a lista de IPs esta vazio
+        # Se o arquivo listaEntradas.txt ja existe, deleta #
+        if [ -e $listaDns ]; then
+            rm -f $listaDns
+            echo -e "        Lista de entradas antiga apagada com sucesso........[\e[32;2m OK \e[m]"
+        else
+            echo -e "        Lista de entradas antiga............................[\e[32;2m OK \e[m]"
+        fi
+        # Verifica se o arquivo com a lista de IPs esta vazio #
         if [ -s $listaIp ]; then
-            echo -e "        $listaIp......[\e[32;2m OK \e[m]";echo
-            sleep 3
+            echo -e "        Preenchimento da lista de ips a ser consultado......[\e[32;2m OK \e[m]";echo
+            sleep 5
         else
             clear
             echo;echo
-            echo -e "\e[31;2m        O arquivo $listaIp esta vazio \e[m";echo
+            echo -e "\e[31;2m        ATENCAO \e[m";echo
+            echo -e "        O arquivo \e[31;2m$listaIp\e[m esta vazio";echo
             echo "        Saindo...";echo
             exit 0
         fi
@@ -65,7 +75,7 @@ iniciar()
             # Le linha a linha o resultado da pesquisa no DNS para o ip atual da lista #
             while read line; do
                 # Captura o ip atual da lista de DNSs achados #
-                leitura=( `echo  "$line" | awk ' { print $3 } '` )
+                leitura=( `echo  "$line" | awk ' { print $4 } '` )
                 # Compara se o ip achado na lista de dns eh igual ao ip consultado #
                 if [[ $ip = $leitura ]]; then
                     # se  o ip achado na lista de dns eh igual ao ip consultado escreve no log #
@@ -89,7 +99,7 @@ sair()
     {
     clear
     echo
-    echo -e "\e[33;2m    O arquivo com a lista de IPs deve estar em $listaIp \e[m"
+    echo -e "\e[33;2m        O arquivo com a lista de IPs deve estar em $listaIp \e[m"
     echo
     exit 0
     }
@@ -102,10 +112,10 @@ echo -n "Opcao: "
 read text1
 
 case "$text1" in
-    "sim"|"Sim"|"SIM"|"sIM")
+    "sim"|"Sim"|"SIM"|"sIM"|"s"|"S")
         iniciar
     ;;
-    "nao"|"Nao"|"NAO"|"nAO")
+    "nao"|"Nao"|"NAO"|"nAO"|"n"|"N")
         sair
     ;;
     *)
@@ -115,4 +125,3 @@ case "$text1" in
     echo
     exit 0 ;;
 esac
-
