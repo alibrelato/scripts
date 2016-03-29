@@ -1,0 +1,1 @@
+echo "halia.alergs.br -- O modem 2 esta com problemas" |gammu -c /etc/gammu1.conf --sendsms TEXT 5184158315

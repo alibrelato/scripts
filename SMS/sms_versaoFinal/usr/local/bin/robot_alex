@@ -1,0 +1,14 @@
+#!/bin/bash
+y=0
+saltos=$1
+pid=${RANDOM}
+clear
+while [ ${y} -lt ${saltos} ]; do
+	y=$((y+1))
+	echo "[ --> ] SEQ[${y}]--DATA:$(date)---> enviando."
+	comando="nome=$(date)_SEQ[${y}]&RG=000000000&telefone=5184158315&submit=enviar"
+	echo  -e ${comando}|lynx http://localhost/acao.php -post_data
+	echo "[ --X ] SEQ[${y}]--DATA:$(date)---> OK."
+	echo " "
+done
+

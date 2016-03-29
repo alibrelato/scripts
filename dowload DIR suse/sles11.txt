@@ -1,0 +1,3 @@
+https://nu.novell.com/repo/$RCE/SLES11-SP3-Extension-Store/sle-11-x86_64
+usuario - 635194656000000000
+senha - 635195385568889643

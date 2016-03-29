@@ -1,0 +1,1 @@
+echo teste modem 2 |gammu -c /etc/gammu2.conf --sendsms TEXT 5184158315

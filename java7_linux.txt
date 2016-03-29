@@ -1,0 +1,13 @@
+java -version
+
+
+openjdk-7-jdk
+
+
+
+
+
+
+ruby-dev libapache2-mod-passenger apache2 ruby ruby1.8-dev libopenssl-ruby rubygems git libcurl4-openssl-dev
+
+

@@ -1,0 +1,64 @@
+#!/bin/bash
+#set -x
+
+#intervalo entre envios.
+# default 0
+timeStop=0
+
+##################################
+## Definicoes do banco de dados ##
+##################################
+
+servidorBanco="172.30.1.15"
+usuarioBanco="smsuser"
+senhaUsuarioBanco="sgrela"
+dataBase="smsGateway_Halia"
+
+while [ 1 ]; 
+do
+
+######################################
+## Funcao para fazer a QUERY no SQL ##
+######################################
+
+function query()
+	{
+	# recebe sql string de fora da function
+	QUERY_SQL=${1} 
+	# executa o SQL (SED -n 2p retira cabecalho da tabela)
+	echo $(echo ${QUERY_SQL} | mysql --host=${servidorBanco} --user=${usuarioBanco} --password=${senhaUsuarioBanco} ${dataBase} | sed -n "2p")
+	}
+	
+consultaSQL=$(echo $(query "SELECT voucher,telefone FROM dados WHERE telefone!='' AND emissao='' AND controle='' LIMIT 1;"))
+## Retira o numero do voucher da cunsulta SQL ##
+voucherSQL=$(echo "$consultaSQL" | cut -d " " -f 1 | sed "s/ //g" )
+## Retira o numero do telefone da cunsulta SQL ##
+telefoneSQL=$(echo "$consultaSQL" | cut -d " " -f 2 | sed "s/ //g" )
+
+query "UPDATE dados SET controle='x' WHERE voucher='${voucherSQL}' AND telefone='${telefoneSQL}';"
+
+teste1=$(ps axu | grep sms1 | grep -v grep) && teste2=$(ps axu | grep sms2 | grep -v grep)
+	if [ ! ${teste1} ]; then
+		consultaSQL=$(echo $(query "SELECT voucher,telefone FROM dados WHERE telefone!='' AND emissao='' AND controle='x' LIMIT 1;"))
+			if [ ! ${consultaSQL} ]; then
+			## Retira o numero do voucher da cunsulta SQL ##
+			voucherSQL=$(echo "$consultaSQL" | cut -d " " -f 1 | sed "s/ //g" )
+			## Retira o numero do telefone da cunsulta SQL ##
+			telefoneSQL=$(echo "$consultaSQL" | cut -d " " -f 2 | sed "s/ //g" )
+			query "UPDATE dados SET controle='1' WHERE voucher='${voucherSQL}' AND telefone='${telefoneSQL}';"
+			/usr/local/bin/sms1
+			fi
+	ifel [ ! ${teste2} ]; then
+		consultaSQL=$(echo $(query "SELECT voucher,telefone FROM dados WHERE telefone!='' AND emissao='' AND controle='x' LIMIT 1;"))
+			if [ ! ${consultaSQL} ]; then
+			## Retira o numero do voucher da cunsulta SQL ##
+			voucherSQL=$(echo "$consultaSQL" | cut -d " " -f 1 | sed "s/ //g" )
+			## Retira o numero do telefone da cunsulta SQL ##
+			telefoneSQL=$(echo "$consultaSQL" | cut -d " " -f 2 | sed "s/ //g" )		
+			query "UPDATE dados SET controle='2' WHERE voucher='${voucherSQL}' AND telefone='${telefoneSQL}';"
+			/usr/local/bin/sms2
+			fi
+	else
+		sleep ${timeStop}
+	fi
+done

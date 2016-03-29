@@ -1,0 +1,16 @@
+
+Index of /SUSE/Updates/SLE-SERVER/12/x86_64/update/nosrc
+
+Icon  Name                                       Last modified      Size  Description[DIR] Parent Directory                                                -   
+[   ] ft2demos-2.5.3-5.1.nosrc.rpm               10-Mar-2015 06:18  2.1M  
+[   ] glibc-2.19-20.3.nosrc.rpm                  18-Mar-2015 10:41  578K  
+[   ] java-1_7_1-ibm-1.7.1_sr2.0-4.1.nosrc.rpm   03-Dec-2014 08:36  347K  
+[   ] java-1_7_1-ibm-1.7.1_sr2.10-8.1.nosrc.rpm  17-Feb-2015 06:07  335K  
+[   ] kernel-default-3.12.32-33.1.nosrc.rpm      16-Jan-2015 05:49  2.0M  
+[   ] kernel-default-3.12.36-38.1.nosrc.rpm      30-Jan-2015 02:05  2.0M  
+[   ] kernel-default-3.12.38-44.1.nosrc.rpm      18-Mar-2015 14:38  2.1M  
+[   ] kernel-xen-3.12.32-33.1.nosrc.rpm          16-Jan-2015 05:49  2.0M  
+[   ] kernel-xen-3.12.36-38.1.nosrc.rpm          30-Jan-2015 02:06  2.0M  
+[   ] kernel-xen-3.12.38-44.1.nosrc.rpm          18-Mar-2015 14:38  2.1M  
+
+Apache/2.2.12 (Linux/SUSE) Server at updates.suse.com Port 80

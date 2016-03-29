@@ -1,0 +1,95 @@
+#!/bin/bash
+######################################
+######################################
+##	Desenvolvido por :				##
+##	 	Edgar Meneghetti			##
+##		Alessandro Librelato 		##
+##		Roberto Fettuccia			##
+##									##
+##  OS : DEBIAN Whezzy				##
+##	Data : 12/03/2014				##
+##	Versao : 2.0					##
+##									##
+######################################
+######################################
+#set -x
+
+#intervalo entre envios.
+# default 0
+
+
+##################################
+## Definicoes do banco de dados ##
+##################################
+
+servidorBanco="172.30.1.15"
+usuarioBanco="smsuser"
+senhaUsuarioBanco="sgrela"
+dataBase="smsGateway_Halia"
+
+while [ 1 ]; 
+do
+
+######################################
+## Funcao para fazer a QUERY no SQL ##
+######################################
+
+function query()
+	{
+	# recebe sql string de fora da function
+	QUERY_SQL=${1} 
+	# executa o SQL (SED -n 2p retira cabecalho da tabela)
+	echo $(echo ${QUERY_SQL} | mysql --host=${servidorBanco} --user=${usuarioBanco} --password=${senhaUsuarioBanco} ${dataBase} | sed -n "2p")
+	}
+
+############
+## Inicio ##
+############
+
+consultaSQL=$(echo $(query "SELECT voucher,telefone FROM dados WHERE telefone!='' AND emissao='' AND controle='' LIMIT 1;"))
+## Retira o numero do voucher da cunsulta SQL ##
+voucherSQL=$(echo "$consultaSQL" | cut -d " " -f 1 | sed "s/ //g" )
+## Retira o numero do telefone da cunsulta SQL ##
+telefoneSQL=$(echo "$consultaSQL" | cut -d " " -f 2 | sed "s/ //g" )
+## Seta o controle com 'x' para indicar que deve ser enviado ""
+query "UPDATE dados SET controle='x' WHERE voucher='${voucherSQL}' AND telefone='${telefoneSQL}';"
+
+## Testa se o processo sms1 ou sms2 estao em execuxao ##
+teste1=$(ps axu | grep sms1 | grep -v grep)
+teste2=$(ps axu | grep sms2 | grep -v grep)
+	
+	## Se o sms1 não esta em execucao, entao executa ##
+	if [ ! ${teste1} ]; then
+	## Captura o voucher que tem o campo controle setado com 'x' ##
+	consultaSqlModemA=$(echo $(query "SELECT voucher,telefone FROM dados WHERE telefone!='' AND emissao='' AND controle='x' LIMIT 1;"))
+		## Retira o numero do voucher da cunsulta SQL ##
+		voucherSqlModemA=$(echo "$consultaSqlModemA" | cut -d " " -f 1 | sed "s/ //g" )
+		## Retira o numero do telefone da cunsulta SQL ##
+		telefoneSqlModemA=$(echo "$consultaSqlModemA" | cut -d " " -f 2 | sed "s/ //g" )
+			## Se existe um nomero de voucher e numero de telefone, executa ##
+			if [ ! -z ${voucherSqlModemA} ] && [ ! -z ${telefoneSqlModemA} ]; then
+			## faz update do campo controle para alterar de 'x' para '1' ##
+			query "UPDATE dados SET controle='1' WHERE voucher='${voucherSqlModemA}' AND telefone='${telefoneSqlModemA}';"
+			## chama o scrip responsavem pelo modem 1 que vai verificar qual controle=1 para enviar o sms ##
+			exec sms1 > /dev/null 2>&1 &
+			fi
+	## Se o sms2 não esta em execucao, entao executa ##
+	elif [ ! ${teste2} ]; then
+	## Captura o voucher que tem o campo controle setado com 'x' ##
+	consultaSqlModemB=$(echo $(query "SELECT voucher,telefone FROM dados WHERE telefone!='' AND emissao='' AND controle='x' LIMIT 1;"))
+		## Retira o numero do voucher da cunsulta SQL ##
+		voucherSqlModemB=$(echo "$consultaSqlModemB" | cut -d " " -f 1 | sed "s/ //g" )
+		## Retira o numero do telefone da cunsulta SQL ##
+		telefoneSqlModemB=$(echo "$consultaSqlModemB" | cut -d " " -f 2 | sed "s/ //g" )
+			## Se existe um nomero de voucher e numero de telefone, executa ##
+			if [ ! -z ${voucherSqlModemB} ] && [ ! -z ${telefoneSqlModemB} ]; then
+			## faz update do campo controle para alterar de 'x' para '2' ##
+			query "UPDATE dados SET controle='2' WHERE voucher='${voucherSqlModemB}' AND telefone='${telefoneSqlModemB}';"
+			## chama o scrip responsavem pelo modem 1 que vai verificar qual controle=2 para enviar o sms ##
+			exec sms2 > /dev/null 2>&1 &
+			fi
+	else
+		sleep 0
+	fi
+sleep 0
+done

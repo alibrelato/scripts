@@ -1,0 +1,21 @@
+# Faz um looping do script
+
+while [ 1 ]; do
+
+# Captura o processo que deve ser monitorado
+teste=`ps axu | grep sms | grep -v grep`;
+
+# teste se o processo esta rodando
+if [ "$teste" ];
+then
+# se esta rodando...
+    echo "sms rodando"
+    exit 1
+else
+# Se não está rodando
+    echo "enviando..."
+    bash /bin/sms
+	exit 1
+fi
+#sleep 5 
+done

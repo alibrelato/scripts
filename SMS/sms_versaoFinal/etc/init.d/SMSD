@@ -1,0 +1,39 @@
+#!/bin/bash
+#set -x
+case $1 in
+	start)
+		# invoca o script no modo background
+			
+		if [ -z $(ps aux|grep 'disparaSMS.sh'|grep -v grep| awk ' { print $2 } ') ]; then
+			/usr/local/bin/disparaSMS.sh > /dev/null 2>&1 &
+			echo "Iniciando... [ OK ]"
+		else
+			echo "ja ativo.."
+		fi
+	;;
+	stop)
+		procA=`ps aux | grep disparaSMS.sh | grep -v grep | awk ' { print $2 } '`
+			if [ ! -z ${procA} ] ; then
+				killall disparaSMS.sh
+				echo "Parado... [ OK ]"
+			else
+				echo "ja parado..."
+			fi
+		
+	;;
+
+	 restart)
+               
+		procA=`ps aux | grep disparaSMS.sh | grep -v grep | awk ' { print $2 } '`
+			if [ ! -z ${procA} ] ; then
+				killall disparaSMS.sh
+				echo "Parado.. [ OK ]"
+				/usr/local/bin/disparaSMS.sh > /dev/null 2>&1 &
+				echo "Iniciando... [ OK ]"
+			fi
+        ;;
+	*)
+		echo "Uso: /etc/init.d/SMSD {start|stop|restart}"
+		exit 1
+	;;
+esac

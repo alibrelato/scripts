@@ -1,0 +1,18 @@
+FIREWALL
+computer | date       | time     | IP  protocol | source              | destination      | original client IP | source network | destination network | action | status rule | application protocol | bytes sen | bytes sent intermediate | bytes received | bytes received intermediate | connection time | connection time intermediate | username | agent | session ID | connection ID
+ALETO      2013-08-29   23:01:25   TCP            172.30.22.108:52385   172.30.1.20:8080   172.30.22.108        Internal         Local Host	       Denied   0xc0040017    -	HTTP Proxy           0	         0	                  0	            0	                          -	             -	                           -	      -	      0	           0
+
+Funcionando
+%{WORD:servername} 20%{DATE:date} %{TIME:time} %{WORD:method} %{IPORHOST:hostip}:(?:%{NOTSPACE:port}|) %{IPORHOST:client}:(?:%{NOTSPACE:clientPort}|) %{IPORHOST:OriClintIP} %{WORD:source} %{GREEDYDATA:teste} %{WORD:teste2} %{WORD:teste3} (?:%{NOTSPACE:query}|-) %{GREEDYDATA:teste4} %{NUMBER:teste5} %{NUMBER:teste6} %{NUMBER:teste7} %{NUMBER:teste8} %{NOTSPACE:teste9} %{NOTSPACE:teste10} %{NOTSPACE:teste11} %{NOTSPACE:teste12} %{NUMBER:teste13} %{NUMBER:teste14}
+
+
+PROXY
+
+c-ip            | cs-username       | date       | time     | r-host                              | r-ip        | time-taken | cs-bytes | sc-bytes | cs-protocol | s-operation | cs-url                                                                     | sc-status
+172.30.23.197     ALERGS\user.snome   2013-09-04   00:00:00   ortc-prd2-useast1-s0002.realtime.co   23.21.85.14   359          594        231        http          POST          http://ortc-prd2-useast1-s0002.realtime.co/broadcast/065/nttam9uq/xhr_send   204
+
+funcionando separando dominio e usuario (problema com usario anonimo)
+%{IPORHOST:cIp} %{WORD:domain}?.(%{NOTSPACE:user}|) 20%{DATE:date} %{TIME:time} %{GREEDYDATA:rHost} %{IPORHOST:rIp} %{IPORHOST:timeTaken} %{WORD:csBytes} %{WORD:scBytes} %{WORD:csProtocol} %{WORD:sOperation} %{GREEDYDATA:csUrl} %{WORD:scStatus}
+
+funcionando juntando dominio\usuario (nao contem problemas)
+%{IPORHOST:cIp} %{GREEDYDATA:user} 20%{DATE:date} %{TIME:time} %{GREEDYDATA:rHost} %{IPORHOST:rIp} %{IPORHOST:timeTaken} %{WORD:csBytes} %{WORD:scBytes} %{WORD:csProtocol} %{WORD:sOperation} %{GREEDYDATA:csUrl} %{WORD:scStatus}

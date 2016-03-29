@@ -1,0 +1,74 @@
+<html>
+<head>
+<title>SMS</title>
+<script type="text/javascript">
+
+    function validaTelefone(campoTelefone, evtTeclado)
+	{
+            var keyCode = ('which' in evtTeclado) ? evtTeclado.which : evtTeclado.keyCode;
+			
+            var teclaNumerica = keyCode != 32 && (keyCode == 8 || keyCode == 37 || keyCode == 39  || keyCode == 46  ||
+							   (keyCode >= 48 && keyCode <= 57 ) || (keyCode >= 96 && keyCode <= 105 ) ||
+							   (campoTelefone.value.length >= 14 && keyCode == 13));
+			var modificadores = (evtTeclado.altKey || evtTeclado.ctrlKey || evtTeclado.shiftKey);
+			
+            return teclaNumerica && !modificadores;	
+	}
+	
+    function mascaraTelefone(campoTelefone)
+	{
+		var btnEnviar = document.getElementById('enviar');		
+		var valorCampo = campoTelefone.value;
+		var tamanhoTotal = 0;
+		
+		//Coloca parênteses nos 2 dígitos iniciais do telefone
+		valorCampo = valorCampo.replace(/([(]{1})/, "");
+		valorCampo = valorCampo.replace(/([)]{1})/, "");
+		valorCampo = valorCampo.replace(/(\s{1})/, "");
+		valorCampo = valorCampo.replace(/^(\d{2})(\d{1,})/g,"($1) $2");
+		
+		//Coloca hífen no número do telefone
+		valorCampo = valorCampo.replace(/([(]{1}\d{2}[)]{1}\s{1}\d{4})(\d)$/,"$1-$2");
+		tamanhoTotal = valorCampo.length;
+		
+		//Ajusta o hífen conforme necessário
+		if (tamanhoTotal >= 14)
+		{
+			valorCampo = valorCampo.replace(/([-]{1})/, "");
+			
+			if (tamanhoTotal == 14)
+			{
+				valorCampo = valorCampo.replace(/([(]{1}\d{2}[)]{1}\s{1}\d{4,})(\d{4})$/,"$1-$2");
+			}
+			else
+			{
+				valorCampo = valorCampo.replace(/([(]{1}\d{2}[)]{1}\s{1}\d{5,})(\d{4})$/,"$1-$2");
+			}
+		}		
+		
+		//Se o campo tiver pelo menos 14 caracteres, habilita o botão de envio do form
+		if (campoTelefone.value.length >= 14)
+		{
+			btnEnviar.disabled = false;
+		}
+		else		
+		{
+			btnEnviar.disabled = true;
+		}
+		
+		campoTelefone.value = valorCampo;		
+	}
+
+</script>
+     
+</head>
+<body>
+     
+<form action="acao.php" method="post" name="formulario" id="formulario"><p>
+	Celular com DDD :</br>
+	Ex. (xx) 9999-1234 ou (xx) 99999-1234</br>
+	<input type="text" name="telefone" id="telefone" maxlength="15" onkeydown="return validaTelefone(this, event);" onkeyup="mascaraTelefone(this);" />
+	<input name="enviar" type="submit" id="enviar" value="enviar" disabled="true"> </p>
+	</form>
+</body>
+</html>

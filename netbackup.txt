@@ -1,0 +1,39 @@
+mount -t smbfs -o username="backup.service",password='backsrv!@06M' '//cloto/d$' /mnt_dr
+scp -r -p arquivo usuario@servidor_destino:local
+scp -r -p /var/log/squid3/access.log root@172.30.1.25:/var/log/remoto/dirce
+
+
+mount -t cifs -o user='backup.service',password='backsrv!@06M',domain='alergs.br' //172.30.1.95/sofotecaroot$  /mnt
+
+mount -t cifs "//10.1.1.54/ISOS" /mnt/alessandro -o user=alessandro.librelato
+mount.cifs "//10.1.1.54/ISOS" /mnt/alessandro/ -o user=alessandro.librelato
+
+cd /mnt/Sofoteca/I\ -\ Servidores\ SisOps\ e\ Aplicativos/NetBackup75/Netbackup_7.5/UnixClient/NetBackup_7.5_CLIENTS
+
+Netbackup_7.5/UnixClient/NetBackup_7.5_CLIENTS
+./install
+
+server = cloto.alergs.br
+client = "server".alergs.br
+
+
+
+
+ariadne:/usr/openv/netbackup# more bp.conf
+
+ 
+
+SERVER = cloto.alergs.br
+
+SERVER = aletes.alergs.br
+
+CLIENT_NAME = ariadne.alergs.br
+
+CONNECT_OPTIONS = localhost 1 0 2
+
+
+
+
+
+
+sudo mount -t cifs -o username="backup.service",password='backsrv!@06M' '//172.30.10.21/c$' /mnt

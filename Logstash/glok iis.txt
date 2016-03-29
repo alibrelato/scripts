@@ -1,0 +1,59 @@
+Aug 22 11:02:05 dirce (squid): 1377180125.485     24 172.30.1.20 TCP_MISS/200 2385 GET http://www.livrariasaraiva.com.br/img/icone_internet-segura.jpg - DIRECT/201.77.198.10 image/jpeg
+
+%a - IP address of the client
+%h - Hostname of the client
+%A - The local IP (useful when combining logs from different servers into one)
+%B - Size of the HTTP response (in bytes), not including the HTTP headers themselves
+%D - How long the request took to service (useful for discovering slow applications), in microseconds
+%T - How long the request took to service, in seconds
+%f - Requested filename
+%U - The requested URL path (excluding query string)
+%m - The HTTP method
+%q - The query string of the request
+%s - The HTTP status of the response
+%t - The timestamp
+%u - The username if the user was authenticated
+%{XYZ}I - The XYZ header of the request (%{Referer}I for the Referer or %{User-agent}I for the User Agent, for example)
+
+
+IP address of the client
+The username if the user was authenticated
+The date of the request
+The time of the request
+Service and instance
+Hostname of the server
+IP address of the server
+How long the request took to service, in milliseconds
+Size of the entire HTTP request, in bytes
+Size of the entire HTTP response, in bytes
+The HTTP status of the response
+Windows status code ("0" meaning "OK")
+The HTTP method
+The requested URL path (excluding the query string)
+The query string of the request
+
+
+
+iis
+2013-08-22 14:22:46 172.30.1.131 GET /Deputados/Portals/_default/Skins/Alrs_Portal/imagens/bgContainer.png - 80 - 172.30.22.102 Mozilla/4.0+(compatible;+MSIE+7.0;+Windows+NT+6.1;+WOW64;+Trident/6.0;+SLCC2;+.NET+CLR+2.0.50727;+.NET+CLR+3.5.30729;+.NET+CLR+3.0.30729;+Media+Center+PC+6.0;+.NET4.0C;+.NET4.0E;+.NET+CLR+1.1.4322;+InfoPath.2) 200 0 0 15
+
+Aug 22 14:28:57 cerberoH 2013-08-22 17:28:52 172.30.1.131 GET /deputados/Resources/Shared/scripts/widgets.js _=1377192532763 80 cristiano.sebben 172.30.22.102 Mozilla/4.0+(compatible;+MSIE+7.0;+Windows+NT+6.1;+WOW64;+Trident/6.0;+SLCC2;+.NET+CLR+2.0.50727;+.NET+CLR+3.5.30729;+.NET+CLR+3.0.30729;+Media+Center+PC+6.0;+.NET4.0C;+.NET4.0E;+.NET+CLR+1.1.4322;+InfoPath.2) 200 0 0 202
+
+IIS Grok Filter: 
+
+%{DATESTAMP:eventtime} %{WORD:site} %{IPORHOST:hostip} %{WORD:method} %{URIPATH:request} (?:%{DATA:param}|-) %{NUMBER:port} (?:%{USER:username}|(%{WORD:domain}\\%{USER:username})|-) %{IPORHOST:clientip}(?: %{DATA:agent}|-) %{NUMBER:response} %{NUMBER:status} %{NUMBER:win32Status}
+IIS Date Format String:
+
+?
+1
+yyyy-MM-dd HH:mm:ss
+PHP Error Log Grok Filter:
+
+?
+1
+\[%{DATA:eventtime} UTC\] (?:%{GREEDYDATA:error})
+PHP Date Format String
+
+?
+1
+yyyy-MM-dd HH:mm:ss

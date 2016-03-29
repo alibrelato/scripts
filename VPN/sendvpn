@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+##########################################################################################
+# Autor: Paulo Ricardo Kuhn
+# Versao: 1.1
+# Data 23/09/2014
+##########################################################################################
+#
+#VARIAVEIS
+DESTINATARIO="$1"
+HOSTNAME=`hostname`
+MENSAGEM="Prezado,
+
+Segue em anexo arquivos para efetuar conexão de vpn com a Shopping
+Favor salvar o arquivo em sua máquina e depois abrir o arquivo LEIAME.doc para proceder com a instalação.
+Dúvidas entratar em contato com SPOC. 
+Att 
+
+Fone: 05193996806 
+Email: spoc@shoppingbrasil.com.br 
+Operalpha. "
+
+ANEXO="$2"
+ASSUNTO="Certificados VPN - SB"
+#
+#sendEmail -f $EMAIL_FROM -t $EMAIL_TO -u "$ASSUNTO" -m "$MENSAGEM" -a $ANEXO -s $SERVIDOR_SMTP -xu $CONTASMTP -xp $SENHA
+#sendmail -f $EMAIL_FROM -t $EMAIL_TO -u "$ASSUNTO" -m "$MENSAGEM"  -s $SERVIDOR_SMTP -xu $EMAIL_FROM -xp $SENHA
+
+#cat $MENSAGEM | 
+mail -s "$ASSUNTO $HOSTNAME" $DESTINATARIO #-a $ANEXO
+

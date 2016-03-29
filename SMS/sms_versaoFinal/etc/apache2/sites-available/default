@@ -1,0 +1,136 @@
+<VirtualHost *:80>
+	ServerAdmin webmaster@localhost
+
+	DocumentRoot /var/www
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+###########################################
+## AUTENTICACAO LDAP PARA A PASTA UPLOAD ##
+###########################################
+
+	<Directory /var/www/upload>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride None
+                Order allow,deny
+                allow from all
+
+        # search user
+                AuthType Basic
+                AuthBasicProvider ldap
+                AuthzLDAPAuthoritative Off
+                AuthName "SMS Gataway"
+                AuthLDAPURL "ldap://172.30.1.56:3268/DC=alergs,DC=br?sAMAccountName?sub?(objectClass=*)"
+
+        # Using this to bind
+                AuthLDAPBindDN "adsearch@alergs.br"
+                AuthLDAPBindPassword "adsearch-7D1"
+
+        # Gerenciamento de Usuarios e grupos que podem ter acesso
+                #require valid-user
+                #Require ldap-user erico.admin erico.rocha alessandro.admin edgar.admin roberto.admin henrique.admin adsea
+                #Require ldap-group CN={group},CN=Users,dc=example,dc=org
+		#Require ldap-group CN={Wiki_Usu},dc=alergs,dc=br
+		Require ldap-group  cn=DTI_Vouchers,ou=Grupos Especiais,dc=alergs,dc=br
+		
+	</Directory>
+
+################################################
+## FIM DA AUTENTICACAO LDAP PARA PASTA UPLOAD ##
+################################################
+
+###########################################
+## AUTENTICACAO LDAP PARA A PASTA teste	 ##
+###########################################
+
+	<Directory /var/www/teste>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride None
+                Order allow,deny
+                allow from all
+
+        # search user
+                AuthType Basic
+                AuthBasicProvider ldap
+                AuthzLDAPAuthoritative Off
+                AuthName "SMS Gataway"
+                AuthLDAPURL "ldap://172.30.1.56:3268/DC=alergs,DC=br?sAMAccountName?sub?(objectClass=*)"
+
+        # Using this to bind
+                AuthLDAPBindDN "adsearch@alergs.br"
+                AuthLDAPBindPassword "adsearch-7D1"
+
+        # Gerenciamento de Usuarios e grupos que podem ter acesso
+                #require valid-user
+                #Require ldap-user erico.admin erico.rocha alessandro.admin edgar.admin roberto.admin henrique.admin adsea
+                #Require ldap-group CN={group},CN=Users,dc=example,dc=org
+		#Require ldap-group CN={Wiki_Usu},dc=alergs,dc=br
+		Require ldap-group  cn=DTI_Vouchers,ou=Grupos Especiais,dc=alergs,dc=br
+		
+	</Directory>
+
+################################################
+## FIM DA AUTENTICACAO LDAP PARA PASTA teste  ##
+################################################
+
+##############################################
+## AUTENTICACAO LDAP PARA A PASTA backlist	##
+##############################################
+
+
+	<Directory /var/www/blacklist>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride None
+                Order allow,deny
+                allow from all
+
+        # search user
+                AuthType Basic
+                AuthBasicProvider ldap
+                AuthzLDAPAuthoritative Off
+                AuthName "SMS Gataway"
+                AuthLDAPURL "ldap://172.30.1.56:3268/DC=alergs,DC=br?sAMAccountName?sub?(objectClass=*)"
+
+        # Using this to bind
+                AuthLDAPBindDN "adsearch@alergs.br"
+                AuthLDAPBindPassword "adsearch-7D1"
+
+        # Gerenciamento de Usuarios e grupos que podem ter acesso
+                #require valid-user
+                #Require ldap-user erico.admin erico.rocha alessandro.admin edgar.admin roberto.admin henrique.admin adsea
+                #Require ldap-group CN={group},CN=Users,dc=example,dc=org
+		#Require ldap-group CN={Wiki_Usu},dc=alergs,dc=br
+		Require ldap-group  cn=DTI_Vouchers,ou=Grupos Especiais,dc=alergs,dc=br
+		
+	</Directory>
+
+
+##################################################
+## FIM DA AUTENTICACAO LDAP PARA PASTA backlist	##
+##################################################
+
+
+	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+	<Directory "/usr/lib/cgi-bin">
+		AllowOverride None
+		Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+		Order allow,deny
+		Allow from all
+	</Directory>
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>

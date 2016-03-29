@@ -1,0 +1,16 @@
+
+Index of /SUSE/Updates/SLE-SERVER/12/x86_64/update/repodata
+
+Icon  Name                                                                               Last modified      Size  Description[DIR] Parent Directory                                                                                        -   
+[   ] 2ff1344605d3d306edbfc198b47d97a84686f9bfe0ecb5db7d3c0f194bed4487-primary.xml.gz    19-Mar-2015 16:14  1.6M  
+[   ] 5afc6cb78c11733eb7ae0cd9dfefc5a37fba3d6530ec285484cf419be9bc7e84-suseinfo.xml.gz   19-Mar-2015 16:15  102   
+[   ] 72ad621ee27e07ecc9f6bdbc5daae7d303e0cfd9050a666372997819cc9cda58-deltainfo.xml.gz  19-Mar-2015 16:15   41K  
+[   ] 89f2ab3d07f54e503d7ec4620e5b3e9d6f8841787ce4d5ad0014b627d2d615f5-susedata.xml.gz   19-Mar-2015 16:15   29K  
+[   ] 967b51089dd33a3e5286c58c979be5c0f2d1451223127ebb9e296f2d1a70bbda-filelists.xml.gz  19-Mar-2015 16:14  2.0M  
+[   ] ccc39fd0c3bcb35967d670898bfd3297f3ec8a29fff489e0ac741b77324f19c1-other.xml.gz      19-Mar-2015 16:14  601K  
+[   ] ecf9d06a5566104f36e1c53d5245df4286f45322a9c21dcd624b372cb9d1050c-updateinfo.xml.gz 19-Mar-2015 16:14   83K  
+[TXT] repomd.xml                                                                         19-Mar-2015 16:15  3.2K  
+[TXT] repomd.xml.asc                                                                     19-Mar-2015 16:15  481   
+[TXT] repomd.xml.key                                                                     19-Mar-2015 16:15  972   
+
+Apache/2.2.12 (Linux/SUSE) Server at updates.suse.com Port 80

@@ -1,0 +1,1 @@
+start /B /D "C:\Program Files (x86)\skype\Phone\" skype.exe /secondary

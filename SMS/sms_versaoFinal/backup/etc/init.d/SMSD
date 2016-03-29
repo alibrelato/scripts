@@ -1,0 +1,57 @@
+#!/bin/bash
+#set -x
+case $1 in
+	start)
+		# invoca o script no modo background
+			
+		if [ -z $(ps aux|grep 'disparaSMS.sh'|grep -v grep| awk ' { print $2 } ') ]; then
+			echo "iniciando..."
+			/usr/local/bin/disparaSMS.sh > /dev/null 2>&1 &
+			echo "Iniciado ... [ OK ]"
+		else
+			echo "ja ativo.."
+		fi
+	;;
+	stop)
+		procA=$(ps aux|grep 'disparaSMS.sh'|grep -v grep| awk ' { print $2 } ')
+		if [ ! -z ${procA} ] ; then
+			kill -TERM ${procA} > /dev/null 2>&1 & 
+			sleep 4
+			procB=$(ps aux|grep "disparaSMS.sh"|grep -v "grep"|awk ' { print $2 } ')
+			if [ ! -z '${procB}' ] ; then
+				kill -KILL ${procB} > /dev/null 2>&1 &
+			fi
+			echo "Parado ... [ OK ]"
+		else
+			echo "ja parado.."
+		fi
+		
+	;;
+
+	 restart)
+               
+		procA=$(ps aux|grep 'disparaSMS.sh'|grep -v grep| awk ' { print $2 } ')
+                if [ ! -z ${procA} ] ; then
+                	echo "Reiniciando ..."
+		        kill -TERM ${procA} > /dev/null 2>&1 &
+                        sleep 4
+                        procB=$(ps aux|grep "disparaSMS.sh"|grep -v "grep"|awk ' { print $2 } ')
+                        if [ ! -z '${procB}' ] ; then
+                                kill -KILL ${procB} > /dev/null 2>&1 &
+                        fi
+                 	/usr/local/bin/disparaSMS.sh > /dev/null 2>&1 &
+			echo "Reiniciado ... [ OK ]"
+                else
+                       	echo "Iniciando ..."
+			/usr/local/bin/disparaSMS.sh > /dev/null 2>&1 &
+			echo "Iniciado ... [ OK ]"
+                fi
+
+        ;;
+	*)
+		echo "Uso: /etc/init.d/SMSD {start|stop|restart}"
+		exit 1
+	;;
+esac
+
+

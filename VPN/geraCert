@@ -1,0 +1,66 @@
+#!/bin/bash
+# Autor: Paulo Ricardo Kuhn
+# Versao: V 1.2
+# Data: 24/08/2014
+#
+#cd /etc/openvpn/script
+cd /etc/openvpn/easy-rsa/2.0/
+echo
+echo "  GARREGANDO VARIAVEIS DO VARS "
+source vars
+echo
+cd /etc/openvpn/user_cert/
+echo -n "  DIGITE O NOME DO USUARIO SEM ESPACOS E ACENTOS EX: fulano.silva: "
+read USUARIO
+echo -n "  DIGITE O EMAIL PARA ENVIO DO CERTIFICADOS: "
+read EMAIL
+#
+openssl req -nodes -new -keyout $USUARIO.key -out $USUARIO.csr -subj '/C=BR/ST=RS/L=POA/CN='$USUARIO'/O=SHOPPINGBRASIL/L=PORTOALEGRE/'
+#Assina o certificado
+openssl ca -out $USUARIO.crt -in $USUARIO.csr
+#
+cp $USUARIO.* /etc/openvpn/user_cert/
+cp /etc/openvpn/keys/dh1024.pem /etc/openvpn/user_cert
+cp /etc/openvpn/keys/ca.crt /etc/openvpn/user_cert
+cp /etc/openvpn/keys/chave.key /etc/openvpn/user_cert
+#
+echo "Gerando o arquivo conf do usuario"
+#
+echo "dev tap" >> /etc/openvpn/user_cert/sb.ovpn
+echo "remote 187.103.103.33" >> /etc/openvpn/user_cert/sb.ovpn
+echo "route-method exe" >> /etc/openvpn/user_cert/sb.ovpn
+echo "route-delay 2" >> /etc/openvpn/user_cert/sb.ovpn
+echo "tls-client" >> /etc/openvpn/user_cert/sb.ovpn
+echo "ca ca.crt" >> /etc/openvpn/user_cert/sb.ovpn
+echo "cert $USUARIO.crt" >> /etc/openvpn/user_cert/sb.ovpn
+echo "key $USUARIO.key" >> /etc/openvpn/user_cert/sb.ovpn
+echo "dh dh1024.pem" >> /etc/openvpn/user_cert/sb.ovpn
+echo "tls-auth chave.key" >> /etc/openvpn/user_cert/sb.ovpn
+echo "port 9020" >> /etc/openvpn/user_cert/sb.ovpn
+echo "pull" >> /etc/openvpn/user_cert/sb.ovpn
+echo "persist-tun" >> /etc/openvpn/user_cert/sb.ovpn
+echo "persist-key" >> /etc/openvpn/user_cert/sb.ovpn
+echo "ping 15" >> /etc/openvpn/user_cert/sb.ovpn
+echo "verb 3" >> /etc/openvpn/user_cert/sb.ovpn
+#
+echo "Fazendo backup dos certificados e conf"
+mkdir /etc/openvpn/user_cert/$USUARIO
+cd /etc/openvpn/user_cert/
+cp $USUARIO.* /etc/openvpn/easy-rsa/2.0/keys
+zip certificados.zip $USUARIO.key $USUARIO.crt $USUARIO.csr ca.crt chave.key dh1024.pem sb.ovpn LEIAME.doc openvpn-install-2.3.3-I002-i686.exe
+cp certificados.zip  /etc/openvpn/user_cert/$USUARIO/
+rm /etc/openvpn/user_cert/$USUARIO.*
+rm /etc/openvpn/user_cert/ca.crt
+rm /etc/openvpn/user_cert/dh1024.pem
+rm /etc/openvpn/user_cert/certificados.zip
+rm /etc/openvpn/user_cert/chave.key
+rm /etc/openvpn/user_cert/sb.ovpn
+# Envia email
+echo "  ENVIAND CERTIFICADO AO USUARIO.................ok"
+#
+echo
+/etc/openvpn/script/sendcertified $EMAIL /etc/openvpn/user_cert/$USUARIO/certificados.zip
+echo "  ENTRAR EM CONTATO COM USUARIO E TESTAR!!!!!!!"
+
+
+

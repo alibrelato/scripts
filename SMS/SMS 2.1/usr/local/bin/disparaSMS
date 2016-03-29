@@ -1,0 +1,17 @@
+#!/bin/bash
+#set -x
+
+#intervalo entre envios.
+# default 0
+timeStop=0
+while [ 1 ]; 
+do
+	teste=$(ps axu | grep sms | grep -v grep)
+	if [ ! ${teste} ]; then
+		/usr/local/bin/sms
+	else
+		sleep ${timeStop}
+	fi
+done
+
+

@@ -1,0 +1,28 @@
+#!/bin/bash
+#
+##########################################################################################
+# Autor: Paulo Ricardo Kuhn
+# Versao: 1.1
+# Data 23/09/2014
+##########################################################################################
+#
+#VARIAVEIS
+DESTINATARIO="$1"
+MENSAGEM="Prezado,\n \nSegue em anexo arquivos para efetuar conexão de vpn com a Shopping.\nFavor salvar o arquivo em sua máquina e depois abrir o arquivo LEIAME.doc para proceder com a instalação.\n \nDúvidas entratar em contato com SPOC. \nAtt \nFone: 05193996806 \nEmail: spoc@shoppingbrasil.com.br \nOperalpha. "
+ANEXO="$2"
+ASSUNTO="Certificados VPN - SB"
+#
+EMAIL_FROM="spoc@shoppingbrasil.com.br"  # usuario de email que se autentica no servidor SMTP
+EMAIL_TO=$DESTINATARIO # Destinatario 
+#
+# Servidor SMTP
+#SERVIDOR_SMTP="mail.shoppingbrasil.com.br" # endereco do servidor SMTP
+#SENHA='xc2030#!@'
+#CONTASMTP='spoc'
+SERVIDOR_SMTP="mail.gfk.com" # endereco do servidor SMTP
+SENHA='hr39uXRS'
+CONTASMTP='shoppingb.spoc'
+#
+sendEmail -f $EMAIL_FROM -t $EMAIL_TO -u "$ASSUNTO" -m "$MENSAGEM" -a $ANEXO -s $SERVIDOR_SMTP -xu $CONTASMTP -xp $SENHA
+#sendmail -f $EMAIL_FROM -t $EMAIL_TO -u "$ASSUNTO" -m "$MENSAGEM"  -s $SERVIDOR_SMTP -xu $EMAIL_FROM -xp $SENHA
+

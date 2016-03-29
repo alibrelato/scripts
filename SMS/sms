@@ -1,0 +1,41 @@
+#!/bin/bash
+function envia
+{
+	numero="$1"
+	msg="$2"
+	logfile=/var/log/SMS.log
+	gammuconf=/etc/gammu.conf
+	envio="$(date)"
+	sendexec="$(echo $msg | gammu -c $gammuconf --sendsms TEXT $numero)"
+	echo "$envio $numero $msg $sendexec" >> $logfile
+}
+# QUERY PARA SQL
+function query(){
+	# variavel global acesso fora da function
+	#------------------
+	QUERY_SQL=$1 # recebe sql string de fora da function
+	#------------------
+	local servidor="172.30.1.15"
+	local user="smsuser"
+	local pw="sgrela"
+	local database="sms"
+	#-------------------
+	# executa o SQL
+	echo $(echo "$QUERY_SQL" | mysql --host="$servidor" --user="$user" --password="$pw" "$database" | sed -n "2p")
+}
+wh=1
+while [ $wh == 1 ]; do
+	XYZ=$(echo $(query "SELECT voucher,telefone FROM dados WHERE telefone!='' AND emissao='' LIMIT 1;"))
+	voucher=$(echo "$XYZ" | cut -d " " -f 1 | sed "s/ //g" ) # split de voucher em XYZ, limpa espacos
+	telefone=$(echo "$XYZ" | cut -d " " -f 2 | sed "s/ //g" ) # split de telefone em XYZ, limpa espacos 
+	
+	# voucher diferente de vazio EE telefone diferente de vazio
+	if [ ! -z "$voucher" ] && [ ! -z "$telefone" ] 
+	then
+		#echo "disparando sms fila [$telefone].."
+		envia "$telefone" "$voucher"
+		query "UPDATE dados SET emissao=now() WHERE voucher='$voucher' AND telefone='$telefone';" # faz update do campo data em dados marcando como enviado.
+	else 
+		wh=0 # sai do loop
+		fi
+done

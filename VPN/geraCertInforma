@@ -1,0 +1,48 @@
+#!/bin/bash
+#BY ROBERTO FONSECA
+#31072011
+#echo -n "Script de uso exclusivo para gerar certificados de vpn para a InformaBrasil"
+echo -n "Digite o nome do usuario, sem espaços e acentos:"
+read USUARIO
+echo -n "Digite o email do usuario":
+read EMAIL
+
+
+
+openssl req -nodes -new -keyout $USUARIO.key -out $USUARIO.csr -subj '/C=BR/ST=RS/L=POA/CN='$USUARIO'/O=SHOPPINGBRASIL/L=PORTOALEGRE/'
+
+
+
+ 
+#Assina o certificado
+openssl ca -out $USUARIO.crt -in $USUARIO.csr
+
+cp $USUARIO.* /etc/openvpn/
+echo "Gerando o arquivo conf do usuario"
+
+echo "dev tap" >> informa.ovpn
+echo "remote 187.103.103.33" >> informa.ovpn
+echo "route-method exe" >> informa.ovpn
+echo "route-delay 2" >> informa.ovpn
+echo "tls-client" >> informa.ovpn
+echo "ca ca.crt" >> informa.ovpn
+echo "cert $USUARIO.crt" >> informa.ovpn
+echo "key $USUARIO.key" >> informa.ovpn
+echo "port 25002" >> informa.ovpn
+echo "pull" >> informa.ovpn
+echo "persist-tun" >> informa.ovpn
+echo "persist-key" >> informa.ovpn
+echo "ping 15" >> informa.ovpn
+echo "verb 3" >> informa.ovpn
+zip certificados.zip $USUARIO.key $USUARIO.crt $USUARIO.csr ca.crt dh.pem informa.ovpn LEIAME.doc 
+echo "Enviando certifieds ao usuario..10%...........25%........70%.................................................................................ok"
+./sendcertified $EMAIL certificados.zip
+echo "Fazendo backup dos certificados e conf"
+mkdir cert_$USUARIO
+mv $USUARIO.* cert_$USUARIO/
+mv informa.ovpn cert_$USUARIO/
+mv certificados.zip  cert_$USUARIO/
+echo "FIM DA GERACAO. ENTRAR EM CONTATO COM USUARIO E TESTAR!!!!!!!"
+
+
+

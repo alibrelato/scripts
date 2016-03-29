@@ -1,0 +1,47 @@
+#!/bin/bash
+#BY ROBERTO FONSECA
+#31072011
+echo -n "Digite o nome do usuario, sem espaços e acentos:"
+read USUARIO
+echo -n "Digite o email do usuario":
+read EMAIL
+
+
+
+openssl req -nodes -new -keyout $USUARIO.key -out $USUARIO.csr -subj '/C=BR/ST=RS/L=POA/CN='$USUARIO'/O=SHOPPINGBRASIL/L=PORTOALEGRE/'
+
+
+
+ 
+#Assina o certificado
+openssl ca -out $USUARIO.crt -in $USUARIO.csr
+
+cp $USUARIO.* /etc/openvpn/
+echo "Gerando o arquivo conf do usuario"
+
+echo "dev tap" >> sb.ovpn
+echo "remote 187.103.103.33" >> sb.ovpn
+echo "route-method exe" >> sb.ovpn
+echo "route-delay 2" >> sb.ovpn
+echo "tls-client" >> sb.ovpn
+echo "ca my-ca.crt" >> sb.ovpn
+echo "cert $USUARIO.crt" >> sb.ovpn
+echo "key $USUARIO.key" >> sb.ovpn
+echo "port 5001" >> sb.ovpn
+echo "pull" >> sb.ovpn
+echo "persist-tun" >> sb.ovpn
+echo "persist-key" >> sb.ovpn
+echo "ping 15" >> sb.ovpn
+echo "verb 3" >> sb.ovpn
+zip certificados.zip $USUARIO.key $USUARIO.crt $USUARIO.csr my-ca.crt dh.pem sb.ovpn LEIAME.doc 
+echo "Enviando certifieds ao usuario..10%...........25%........70%.................................................................................ok"
+./sendcertified $EMAIL certificados.zip
+echo "Fazendo backup dos certificados e conf"
+mkdir cert_$USUARIO
+mv $USUARIO.* cert_$USUARIO/
+mv sb.ovpn cert_$USUARIO/
+mv certificados.zip  cert_$USUARIO/
+echo "FIM DA GERACAO. ENTRAR EM CONTATO COM USUARIO E TESTAR!!!!!!!"
+
+
+
