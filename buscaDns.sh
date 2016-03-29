@@ -91,17 +91,17 @@ iniciar()
         clear
         cat /dev/null > $listaIp
         echo
-        echo -e "    Seu log esta em\e[32;2m $log \e[m"
+        echo -e "        Seu log esta em\e[32;2m $log \e[m"
         echo
         exit 0
     }
 sair()
     {
-    clear
-    echo
-    echo -e "\e[33;2m        O arquivo com a lista de IPs deve estar em $listaIp \e[m"
-    echo
-    exit 0
+        clear
+        echo
+        echo -e "\e[33;2m        O arquivo com a lista de IPs deve estar em $listaIp \e[m"
+        echo
+        exit 0
     }
 #####################################
 ### Opecoes de operacao do script ###
@@ -121,7 +121,7 @@ case "$text1" in
     *)
     clear
     echo
-    echo -e "\e[33;2m    OPCAO DESCONHECIDA...TENTE NOVAMENTE.\e[m"
+    echo -e "\e[33;2m        OPCAO DESCONHECIDA...TENTE NOVAMENTE.\e[m"
     echo
     exit 0 ;;
 esac
