@@ -299,7 +299,7 @@ function atualiza()
             cd $origemBackup
         fi
         # Apos estar no diretorio correto, movimenta o tar para seguir com a atualizacao #
-        mv $origemPacote/$pacote .
+        sudo mv $origemPacote/$pacote .
         if [ -e $pacote ]; then
             # Se moveu corretamente o pacote, faz a atualizacao #
             sudo tar -xvzf $pacote
@@ -311,7 +311,7 @@ function atualiza()
                 echo -e "    Permissao do arquivo $listaArquivos ajustado!"
             done
             # Movimenta o pacote para a area dos pacotes atualizados #
-            mv $pacote $pacotesAtualizados
+            sudo mv $pacote $pacotesAtualizados
             # Se o pacote foi movimentado com sucesso #
             if [ -e $pacotesAtualizados/$pacote ]; then
                 echo
