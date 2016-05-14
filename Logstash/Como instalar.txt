@@ -1,0 +1,52 @@
+Instalação ubuntu server
+
+apt-get install openjdk-8-jdk 
+apt-get install apache2
+
+## ELASTICSEARCH ##
+cd /opt/
+curl -L -O https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.3.2/elasticsearch-2.3.2.tar.gz
+tar -xvf elasticsearch-2.3.2.tar.gz
+cd elasticsearch-2.3.2/bin
+# para rodar #
+./elasticsearch
+
+https://www.elastic.co/guide/en/elasticsearch/guide/current/running-elasticsearch.html
+https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.html
+
+USANDO
+Crio o cluster
+./elasticsearch --cluster.name alessandro --node.name alessandro
+
+Verifico se esta ok
+epoch      timestamp cluster       status node.total node.data shards pri relo init unassign
+1394735289 14:28:09  elasticsearch green           1         1      0   0    0    0        0
+
+curl 'localhost:9200/_cat/nodes?v'
+host         ip        heap.percent ram.percent load node.role master name
+mwubuntu1    127.0.1.1            8           4 0.00 d         *      alessandro
+
+listando os indices
+curl 'localhost:9200/_cat/indices?v'
+health index pri rep docs.count docs.deleted store.size pri.store.size
+
+## LOGSTASH ##
+
+wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+echo "deb http://packages.elastic.co/logstash/2.3/debian stable main" | sudo tee -a /etc/apt/sources.list
+sudo apt-get update && sudo apt-get install logstash
+
+https://www.elastic.co/guide/en/logstash/current/installing-logstash.html
+
+## KIBANA ##
+
+wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+echo "deb http://packages.elastic.co/kibana/4.5/debian stable main" | sudo tee -a /etc/apt/sources.list
+sudo apt-get update && sudo apt-get install kibana
+sudo update-rc.d kibana defaults 95 10
+sudo /bin/systemctl daemon-reload
+sudo /bin/systemctl enable kibana.service
+
+http://YOURDOMAIN.com:5601
+
+https://www.elastic.co/guide/en/kibana/current/setup.html
