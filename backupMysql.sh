@@ -10,13 +10,13 @@
 data=`date "+%d-%m-%Y"`
 destino=/backup
 log=/var/log/mysql/backup.log
-mailTo="dti.rede@al.rs.gov.br \ -c alessandro.librelato@terc.al.rs.gov.br" #email com copia
-hostName="ismenia"
-altServer="temis"
+mailTo="email@dominio \ -c email@dominio" #email com copia
+hostName="nomeDoHost"
+altServer="servidorSecundario"
 listaBancos=/backup/bancos.txt
 ## Configuracao Servidor MySQL
-mysqlUser="admbkp"
-mysqlPass="sgrela"
+mysqlUser="mysqlUsuario"
+mysqlPass="senha"
 mysqlHost="localhost"
 mysqlPort="3306"
 
@@ -39,7 +39,7 @@ if [ -e ${listaBancos} ]; then
 	do
 		/usr/bin/mysqldump --user=${mysqlUser} --password=${mysqlPass} --host=${mysqlHost} ${banco} --skip-lock-tables | gzip > ${destino}/${banco}.${data}.sql.gz
 	done
-	ssh root@temis "/usr/bin/mysqldump  -u rtuser -prtdbadm --all-databases --skip-lock-tables | gzip" > ${destino}/${altServer}.${data}.sql.gz
+	ssh root@servidor "/usr/bin/mysqldump  -u rtuser -prtdbadm --all-databases --skip-lock-tables | gzip" > ${destino}/${altServer}.${data}.sql.gz
 	
 	## Escrita no log /var/log/mysql/backup.log
 	/bin/echo "Final do Backup " >> ${log}
