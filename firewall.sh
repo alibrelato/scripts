@@ -4,7 +4,6 @@
 #"- Script de Firewall - iptables                      -"
 #"- Criado por: Alessandro Librelato em 22/07/2015     -"
 #"- Tecnologia da Informacao                           -"
-#"- alibrelato@outlook.com                             -"
 #"------------------------------------------------------"
 
 ###########################
