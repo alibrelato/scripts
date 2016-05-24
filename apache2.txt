@@ -2,13 +2,13 @@
                 AuthType Basic
                 AuthBasicProvider ldap
                 AuthzLDAPAuthoritative Off
-                AuthName "Servidor media wiki"
-                AuthLDAPURL "ldap://172.30.1.56:3268/DC=alergs,DC=br?sAMAccountName?sub?(objectClass=*)"
+                AuthName "descricao do servidor"
+                AuthLDAPURL "ldap://IP:PORTA/DC=dominio,DC=br?sAMAccountName?sub?(objectClass=*)"
 
         # Using this to bind
-                AuthLDAPBindDN "adsearch@alergs.br"
-                AuthLDAPBindPassword "adsearch-7D1"
+                AuthLDAPBindDN "usuario@dominio"
+                AuthLDAPBindPassword "senha"
 
         # Gerenciamento de Usuarios e grupos que podem ter acesso
                 require valid-user
-                Require ldap-group CN={DTI_Usu},dc=alergs,dc=br
+                Require ldap-group CN={grupo_ad},dc=dominio,dc=br
