@@ -12,23 +12,19 @@
 ### Variaveis do ambiente ###
 montagem=/mnt/backup
 hostname=`hostname`
-servidorDestino=10.0.0.34
-pastaDestino=/var/lib/xen/images/medias/BKP/
+servidorDestino=192.168.1.2
+pastaDestino=/usr/local/backup
 log="/tmp/backup.log"
-email="alphatec@shoppingbrasil.com.br"
+email="email@dominio"
 listaPasta="
-/data0/pedidos/CbdIntegracao/
 /home/
-/data0/anexo/
-/data0/automacaoftp/
 /etc/
-/data0/dexter/
 /var/spool/cron/tabs/
 /boot/
 /root/
 "
 while true; do
-	# verifica se o 10.0.0.34 esta montado, se estiver, desmonta #
+	# verifica se o host esta montado, se estiver, desmonta #
 	if mountpoint -q $montagem; then
 		umount $montagem
 	# Se o 10.0.0.34 nao estiver montado, inicia a rotina de backup #
@@ -42,7 +38,7 @@ while true; do
 		echo "" >> $log
 		# Se a pasta /mnt/backup existe #
 		if [ -d $montagem ]; then
-			# Monta o 10.0.0.34 #
+			# Monta o host #
 			mount -t nfs $servidorDestino:$pastaDestino $montagem
 			# Verifica se a pasta do ponto de montagem recem montado esta vazia #
 			testePasta=`[[ $(ls -A $montagem) ]] && echo "cheio" || echo "vaziu"`
@@ -63,7 +59,7 @@ while true; do
 			mkdir $montagem
 			echo "pasta $montagem criada" >> $log
 			echo "---------------------------------" >> $log
-			# Monta o 10.0.0.34 # 
+			# Monta o host # 
 			mount -t nfs $servidorDestino:$pastaDestino $montagem
 			# Verifica se a pasta do ponto de montagem recem montado esta vazia #
 			teste=`[[ $(ls -A $montagem) ]] && echo "cheio" || echo "vaziu"`
@@ -97,7 +93,7 @@ while true; do
 		du -sh $montagem/ >> $log
 		echo "" >> $log
 		echo "---------------------------------" >> $log
-		# Desmonta o 10.0.0.34 #
+		# Desmonta o host #
 		umount $montagem
 		# Manda o log por email #
 		cat $log | mail -s "BACKUP DO SERVIDOR $hostname" $email
