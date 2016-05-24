@@ -9,12 +9,12 @@
 ######################################
 #set -x
 
-origemBackup=/data0/bkp_atualizacoes_portal/desenv_portal # de onde vem o backup a ser restaurado
-destinoAtualizacao=/usr/local/apache/htdocs/desenv_portal # onde o pacote de backup sera restaurado
-ambienteGeral="desenv_portal" # ambiente geral do pacote
+origemBackup=/onde/esta/pacote/a/ser/restaurado # de onde vem o backup a ser restaurado
+destinoAtualizacao=/para/onde/vai/o/pacote/a/ser/atualizado # onde o pacote de backup sera restaurado
+ambienteGeral="DesenvOuProd" # ambiente geral do pacote
 log=/var/log/atualizacao_portal/restauracao_desenv.log # log do script
-pacotesAtualizados=/usr/local/apache/uploads/atualizado_desenv # para onde move os pacotes apos serem atualizados
-mailTo="alphatec@shoppingbrasil.com.br" # email de report
+pacotesAtualizados=/para/onde/move/os/pacotes/atualizados # para onde move os pacotes apos serem atualizados
+mailTo="email@dominio" # email de report
 cabecalho="
 
         -------------------------------------
