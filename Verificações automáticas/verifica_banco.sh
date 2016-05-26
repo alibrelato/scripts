@@ -9,14 +9,14 @@
 ## Variaveis do sistema ##
 ##########################
 
-USER=rtuser #usuaro do banco
-PASSWORD=rtdbadm #senha do banco
+USER='usuario' #usuaro do banco
+PASSWORD='senha' #senha do banco
 DBHOST=localhost #onde esta o banco
 LOGFILE=/opt/rt3/var/log/mysql_check.log #log
 #MAILTO="dti.rede@al.rs.gov.br \ -c henrique.knorre@terc.al.rs.gov.br" #email com copia
-MAILTO="dti.rede@al.rs.gov.br \ -c alessandro.librelato@terc.al.rs.gov.br" #email com copia
+MAILTO="email@dominio \ -c email@dominio" #email com copia
 CORRUPT=no # assume que corrupt e no quando inicia
-DBNAMES="rt3" #nome do banco
+DBNAMES="nomeDoBanco" #nome do banco
 DBTABLECONNECT="information_schema" #qual banco vai ser usada para conectar
 DBTABLES="information_schema.tables" #de onde eh pega a lista de batelas
 

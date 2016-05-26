@@ -4,28 +4,25 @@
 ## Por Alessandro Librelato em 05-05-2014
 ## Script para limpar a area publico do paleno
 ##
-USUARIO="backup.service"
-SENHA="backsrv!@06M"
-DOMINIO="alergs.br"
-SERVIDOR_VNXCIFS="172.30.1.95"
-DESTINO=/mnt/paleno
-EXCECAO=/mnt/paleno/informatica/Publico/Taquigrafia
+USUARIO="usuario"
+SENHA="senha"
+DOMINIO="dominio.br"
+SERVIDOR_VNXCIFS="ipOuHostname"
+DESTINO=/mnt/storage
+EXCECAO=/mnt/storage/publico
 
 ######################################################################################################################
 ## IMPORTANTE																										##
 ## A variavel EXCECAO foi criada por uma solicitacao da taquigrafia, pois eles mesmo fazem a limpesa periodicamente ##
 ######################################################################################################################
 
-## Monta a pasta //paleno/publico dentro de /mnt/paleno
+## Monta a pasta //storage/publico dentro de /mnt/storage
 mount -t cifs -o user=${USUARIO},password=${SENHA},domain=${DOMINIO} //${SERVIDOR_VNXCIFS}/setoresroot$  ${DESTINO}
 
 # -r = recursivo
 # -f = force
 # -p = preserva todos atributos
 # --parents = com diretorios
-
-## Faz backup dos arquivos com mais de 30 dias
-#find ${DESTINO}/* -type f -a -mtime +60 -exec cp -rfp --parents {} /mnt/backup/informatica/DTI/Rede/backupPublico \;
 
 ## Deleta os arquivos com mais de 60 dias, com excecao da pasta Taquigrafia
 find ${DESTINO}/informatica/Publico/* -path ${EXCECAO} -prune -o -type f -a -mtime +60 -exec chmod 777 {} \;

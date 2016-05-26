@@ -13,7 +13,7 @@
 data=`date "+%d-%m-%Y"`
 hostName=`hostname`
 log=/var/log/verificacao.log
-mailTo="alphatec@shoppingbrasil.com.br"
+mailTo="email@dominio"
 messages=/var/log/messages
 caminhoOcfs2=/etc/rc.d/ocfs2
 

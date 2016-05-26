@@ -8,15 +8,15 @@
 ## Variaveis do sistema ##
 ##########################
 
-USER=rtuser
-PASSWORD=rtdbadm
+USER=usuario
+PASSWORD=senha
 DBHOST=localhost
 LOGFILE=./mysql_check.log
-MAILTO=alessandro.librelato@terc.al.rs.gov.br
+MAILTO=email@dominio
 TYPE1= # para parametros extras
 TYPE2= 
 CORRUPT=no # assume que corrupt e no quando inicia
-DBNAMES="rt3" #nome do banco
+DBNAMES="nomeDB" #nome do banco
 DBEXCLUDE="" # lista tabelas a serem verificadas no caso de "" sao todas
 
 ##########################

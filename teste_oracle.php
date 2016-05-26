@@ -1,6 +1,6 @@
 <?php
 // Create connection to Oracle
-$conn = oci_connect("botsb", "botsb", "//localhost/wdb");
+$conn = oci_connect("usuario", "senha", "//localhost/banco");
 if (!$conn) {
    $m = oci_error();
    echo $m['message'], "\n";
