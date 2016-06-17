@@ -5,6 +5,8 @@ mount -t cifs -o user='backup.service',password='backsrv!@06M',domain='alergs.br
 mount -t cifs "//10.1.1.54/ISOS" /mnt/alessandro -o user=usuario
 mount.cifs "//10.1.1.54/ISOS" /mnt/alessandro/ -o user=usuario
 
+10.235.202.8:/mail-log-mia      /gfs-log        glusterfs       backupvolfile-server=10.235.202.9,log-level=WARNING,transport=tcp,ro,_netdev    0 0
+
 cd /mnt/Sofoteca/I\ -\ Servidores\ SisOps\ e\ Aplicativos/NetBackup75/Netbackup_7.5/UnixClient/NetBackup_7.5_CLIENTS
 
 Netbackup_7.5/UnixClient/NetBackup_7.5_CLIENTS
