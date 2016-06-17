@@ -1,7 +1,7 @@
 mount -t smbfs -o username="usuario",password='senha' '//servidor/d$' /mnt_dr
 scp -r -p arquivo usuario@servidor_destino:local
 
-mount -t cifs -o user='backup.service',password='backsrv!@06M',domain='alergs.br' //172.30.1.95/sofotecaroot$  /mnt
+mount -t cifs -o user='usuario',password='senha',domain='dominio.br' //servidor/sofotecaroot$  /mnt
 mount -t cifs "//10.1.1.54/ISOS" /mnt/alessandro -o user=usuario
 mount.cifs "//10.1.1.54/ISOS" /mnt/alessandro/ -o user=usuario
 
