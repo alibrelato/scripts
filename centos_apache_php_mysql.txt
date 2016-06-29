@@ -21,7 +21,7 @@ systemctl status firewalld
 
 chkconfig httpd on
 
-yum install php php-mysql php-devel php-xml php-xmlrpc php-ldap
+yum install php php-mysql php-devel php-xml php-xmlrpc php-ldap php-mcrypt
 
 criar o arquivo /var/www/html/index.php
 
@@ -66,3 +66,15 @@ mysql> flush privileges;
 PHPMYADMIN
 yum install epel-release
 yum install phpmyadmin
+
+dar permissao de acesso ao phpmysql editando o arquivo chkconfig httpd on
+
+exemplo:
+adicionando em todas linhas de versoes de apache
+onde há Allow adicionar
+Allow from 192.168.0.0/23
+Onde há require adicionar
+Require ip 192.168.0.0/23
+
+Com isso falamos ao apache para ele liberar o acesso ao range 192.168.0.0/23
+
