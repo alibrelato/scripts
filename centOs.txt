@@ -1,0 +1,4 @@
+/etc/selinux/config
+
+#SELINUX=enforcing
+SELINUX=disable
