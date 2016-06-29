@@ -1,0 +1,68 @@
+yum update
+
+Editar o arquivo /etc/selinux/config
+#SELINUX=enforcing
+SELINUX=disable
+
+reiniciar o servidor
+
+yum install httpd mod_ssl
+
+/usr/sbin/apachectl start
+
+iptables -I INPUT -p tcp --dport 80 -j ACCEPT
+
+desabilitar o Firewall
+systemctl status firewalld
+systemctl disable firewalld
+systemctl stop firewalld
+systemctl status firewalld
+
+
+chkconfig httpd on
+
+yum install php php-mysql php-devel php-xml php-xmlrpc php-ldap
+
+criar o arquivo /var/www/html/index.php
+
+<?php
+// Mostra todas as informações, usa o padrão INFO_ALL
+phpinfo();
+// Mostra apenas informações dos módulos.
+// phpinfo(8) mostra um resultado identico.
+phpinfo(INFO_MODULES);
+?>
+
+testar no browser host/index.php
+
+
+editar o arquivo /etc/httpd/conf/httpd.conf e alterar:
+
+DocumentRoot "/var/www/htdocs" PARA DocumentRoot "/server/apache/htdocs"
+<Directory "/var/www/htdocs"> PARA <Directory "/server/apache/htdocs">
+AddDefaultCharset UTF-8 PARA AddDefaultCharset ISO-8859-1
+
+editar o arquivo /etc/php.ini e alterar
+short_open_tag = On
+
+reiniciar o apache
+/usr/sbin/apachectl restart
+
+MYSQL
+
+wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+rpm -ivh mysql-community-release-el7-5.noarch.rpm
+yum update
+
+yum install mysql-server
+systemctl start mysqld
+
+o usuario root do mysql esta sem senha, para alterar entre no mysql:
+#mysql -uroot -p
+
+mysql> update mysql.user set password=PASSWORD('nova_senha') where user='root';
+mysql> flush privileges;
+
+PHPMYADMIN
+yum install epel-release
+yum install phpmyadmin
