@@ -33,7 +33,7 @@ fi
 # Deleta todos backups antigos #
 rm -f ${destino}/*.gz
 # Listando todos os bancos que devem ser feito backup e armazena a lista no arquivo de lista de bancos #
-echo "show databases;" | mysql --user=${mysqlUser} --password=${mysqlPass} --host=${mysqlHost} | grep -v Database | grep -v information_schema | grep -v mysql | grep -v sys | grep -v performance_schema > ${listaBancos}
+echo "show databases;" | mysql --user=${mysqlUser} --password=${mysqlPass} --host=${mysqlHost} | egrep -v 'Database|mysql|information_schema|performance_schema|sys' > ${listaBancos}
 # verifica se o arquivo com a lista dos bancos existe #
 if [ -e ${listaBancos} ]; then
 	# Le o arquivo gerado com todas as bases do Servidor para a variavel bancos #
