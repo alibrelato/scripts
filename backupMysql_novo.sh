@@ -32,9 +32,9 @@ if [ -e ${listaBancos} ]; then
 fi
 # Deleta todos backups antigos #
 rm -f ${destino}/*.gz
-# Listando todos os bancos que devem ser feito backup e armazena a lista no arquivo de lista de bancos #
+# Listando todos os bancos que devem ser feito backup e armazena a lista no arquivo de lista de bancos, com excessao dos bancos padroes do MySql #
 echo "show databases;" | mysql --user=${mysqlUser} --password=${mysqlPass} --host=${mysqlHost} | egrep -v 'Database|mysql|information_schema|performance_schema|sys' > ${listaBancos}
-# verifica se o arquivo com a lista dos bancos existe #
+# verifica se o arquivo com a lista dos bancos foi criado com sucesso #
 if [ -e ${listaBancos} ]; then
 	# Le o arquivo gerado com todas as bases do Servidor para a variavel bancos #
 	bancos=( `cat "${listaBancos}"` )
@@ -44,7 +44,7 @@ if [ -e ${listaBancos} ]; then
 		mysqldump --user=${mysqlUser} --password=${mysqlPass} --host=${mysqlHost} ${banco} | gzip > ${destino}/${banco}.${data}.sql.gz
 	done
 	# Escreve os resultados no log # 
-	echo "Final do Backup " >> ${log} ;	echo ${data} >> ${log} ; echo "Volume copiado para Backup" >> ${log} ; echo "" >> ${log}
+	echo "Final do Backup " >> ${log} ; echo ${data} >> ${log} ; echo "Volume copiado para Backup" >> ${log} ; echo "" >> ${log}
 	# Verifica o tamanho dos bancos feito backup e escreve no log #
 	for banco in "${bancos[@]}"
 	do
