@@ -42,7 +42,7 @@ if [ -e $listaBancos ]; then
 	rm -f $listaBancos
 fi
 # Pega a lista dos bancos a serem verificados com algumas excecoes
-echo "show databases;" | mysql --user=$mysqlUser --password=$mysqlPass --host=$mysqlHost | grep -v Database | grep -v information_schema | grep -v mysql | grep -v sys | grep -v performance_schema > $listaBancos
+echo "show databases;" | mysql --user=$mysqlUser --password=$mysqlPass --host=$mysqlHost | egrep -v 'Database|mysql|information_schema|performance_schema|sys' > $listaBancos
 #Lê a lista de bancos linha a linha e vai executando o check e a otimizacao de cada banco
 bancos=( `cat "${listaBancos}"` )
 # Backup com mysqldump lendo o arquivo com a lista de bancos linha a linha
