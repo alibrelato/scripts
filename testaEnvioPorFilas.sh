@@ -2,9 +2,12 @@
 ##############################################################
 # Envia os e-mails conforme a quantidade de filas do postfix #
 ##############################################################
-
+#set-x
 contador=0 # Contador para o numero das filas
-#set -x
+hostname=`hostname`
+emailOrigem="usuario@dominio"
+emailDestino="usuario@dominio"
+
 # Se o arquivo ip.txt existe, apaga #
 if [ -e ip.txt ]; then
         rm -f ip.txt
@@ -24,14 +27,15 @@ while read ip; do
 (
 echo "helo terra.com.br";
 sleep 1;
-echo "MAIL FROM: <a.librelato@terra.com.br>";
+echo "MAIL FROM: <$emailOrigem>";
 sleep 1;
-echo "RCPT TO: <alibrelato@gmail.com>";
+echo "RCPT TO: <$emailDestino>";
 sleep 1;
 echo "DATA";
 sleep 1;
 echo -e "Subject: Fila $contador";
-echo -e "$ip";
+echo -e "host $hostname";
+echo -e "ip $ip";
 echo -e ".";
 sleep 2;
 echo -e "quit";
